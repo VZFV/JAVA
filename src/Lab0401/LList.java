@@ -1,3 +1,5 @@
+package Lab0401;
+
 /**
    A class that implements the ADT list by using a chain of
    linked nodes that has a head reference.

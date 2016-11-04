@@ -7,6 +7,8 @@
 
     Updated by C. Lee-Klawender 2015
 */
+package Lab0401;
+
 public interface ListInterface<T>
 {
    /** Adds a new entry to the end of this list.

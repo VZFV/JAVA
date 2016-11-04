@@ -1,5 +1,5 @@
 /**   A class of stacks whose entries are stored in a chain of nodes.   @author Frank M. Carrano   @author Timothy M. Henry   @version 4.0
-   UPDATED by C. Lee-Klawender*/package AllStackFiles;public class LinkedStack<T> implements StackInterface<T>{	private Node topNode; // References the first node in the chain
+   UPDATED by C. Lee-Klawender*/package HW1;public class LinkedStack<T> implements StackInterface<T>{	private Node topNode; // References the first node in the chain
 	private int numberOfEntries; // ADD A PRIVATE INT FOR COUNTER THAT INDICATES HOW MANY NODES ARE IN THE STACK	public LinkedStack()	{		topNode = null;	} // end default constructor	public boolean push(T newEntry)	{        topNode = new Node(newEntry, topNode);
         numberOfEntries++; // ADD CODE SO THE COUNTER IS CORRECT        return true;	} // end push	public T peek()	{		if (isEmpty())			return null;		else         return topNode.getData();	} // end peek	public T pop()	{	   T top = peek();	   if(topNode != null)
 	   {           topNode = topNode.getNextNode();

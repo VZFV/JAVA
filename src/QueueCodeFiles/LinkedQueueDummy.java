@@ -1,6 +1,5 @@
 package QueueCodeFiles;
 
-import QueueCodeFiles.LinkedQueue.Node;
 
 public class LinkedQueueDummy<T> implements QueueInterface<T>
 {
