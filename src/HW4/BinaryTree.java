@@ -1,3 +1,12 @@
+/**
+ * BinaryTree
+ * Author: Feng Zhang
+ * 11/14/2016
+ * window 10 64bit, eclipse
+ * This is Binary tree class. 
+ */
+package HW4;
+
 public abstract class BinaryTree<E extends DeepCloneable<E>> implements TreeInterface<E> {
 	protected BinaryNode<E> root=null; // reference to the root
     protected int size=0; // number of nodes in the tree
@@ -6,25 +15,33 @@ public abstract class BinaryTree<E extends DeepCloneable<E>> implements TreeInte
 
     public BinaryTree(BinaryTree<E> sourceTree)
     {
-    	// YOU WRITE (should do a DEEP COPY by calling deepCopyTree)
+    	sourceTree.deepCopyTree(root);
     	
     }
 
     /** Clears the whole tree */
     public void clear()
     {
-    	//FINISH FOR HOMEWORK #4 // !!!!!!
+    	this.root = null;
+    	
     }
     
     protected BinaryNode<E> deepCopyTree(BinaryNode<E> node)
-    {
-    	BinaryNode<E> newRoot;
+    {	
+    	if(node == null)	// check node is null
+    		return null;
     	
-    	// YOU FINISH: to make a deep copy, you need make new instances of each Node
-    	//     AND each Node's data!
+    	BinaryNode<E> newRoot = new BinaryNode<E>(); // instantiate newRoot
+    	
+    	E cloneData = node.getData().deepClone(); // deep clone data
+    	
+    	newRoot.setData(cloneData);					// set node data	
+    	newRoot.setLeftChild(deepCopyTree(node.getLeftChild()));	// recursion for node's left child
+    	newRoot.setRightChild(deepCopyTree(node.getRightChild()));	// recursion for node's right child
     	
     	return newRoot;
     }
+    
 
     @Override /** Preorder traversal from the root */
     public void preorder(Visitor<E> visitor) 
@@ -65,19 +82,30 @@ public abstract class BinaryTree<E extends DeepCloneable<E>> implements TreeInte
     		visitor.visit(root.getData());
     		preorder(root.getLeftChild(), visitor);
     		preorder(root.getRightChild(), visitor);
-    }
+    }   
 
-     /** Inorder traversal from a subtree */
+	/** Inorder traversal from a subtree */
     protected void inorder(BinaryNode<E> root, Visitor<E> visitor) 
     {
-         // you finish (part of HW#4), SEE preorder above this
+    	if (root == null)
+			return;
+    	
+    	inorder(root.getLeftChild(), visitor);
+    	visitor.visit(root.getData());
+    	inorder(root.getRightChild(), visitor);
 
     }
 
      /** Posorder traversal from a subtree */
     protected void postorder(BinaryNode<E> root, Visitor<E> visitor) 
     {
-         // you finish (part of HW#4)
-
+       
+    	if (root == null)
+			return;
+    	
+    	visitor.visit(root.getLeftChild().getData());
+    	inorder(root.getRightChild(), visitor);
+    	inorder(root, visitor);
+    
     }
 } // end abstract BinaryTree class

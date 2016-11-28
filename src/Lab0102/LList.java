@@ -8,7 +8,7 @@
 */
 package Lab0102;
 
-public class LList<T extends Comparable<T>> implements ListInterface<T>
+public class LList<T> implements ListInterface<T>
 {
 	private Node firstNode;            // Reference to first node of chain
 	private int  numberOfEntries;
@@ -196,27 +196,13 @@ public class LList<T extends Comparable<T>> implements ListInterface<T>
             return null;
 	} // end getNodeAt
 	
-	public T getSmallest()
-
-    {
-         if( firstNode == null )
-
-             return null;
-
-         T smallestT = firstNode.getData();    
-         Node currentNode = firstNode;
-         
-         for (int counter = 1; counter <= numberOfEntries; counter++){
-             currentNode = currentNode.getNextNode();
-             int result = smallestT.compareTo(currentNode.getData());
-             if(result > 0){
-            	 smallestT = currentNode.getData();
-             }
-             
-         }
-         return smallestT;
-
-  }
+	public void traverse(Visitor<T> visitor){
+		Node currentNode = firstNode;
+		while(currentNode != null){
+			visitor.visit(currentNode.getData());
+			currentNode = currentNode.getNextNode();
+		}
+	}
 
 	private class Node
 	{

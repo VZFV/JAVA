@@ -1,3 +1,12 @@
+/**
+ * Card
+ * Author: Feng Zhang
+ * 11/14/2016
+ * window 10 64bit, eclipse
+ * This is card class.
+ */
+package HW4;
+
 public class Card implements DeepCloneable<Card>{
 	public static int MAX_PIPS = 13;
 	public static int NUM_SUITS = 4;
@@ -15,9 +24,7 @@ public class Card implements DeepCloneable<Card>{
 		suitNum = 0;
 	}
 
-
-	public Card(int pNum,
-		int sNum)
+	public Card(int pNum, int sNum)
 	{
 		pips = 1;
 		suitNum = 0;
@@ -76,3 +83,4 @@ public class Card implements DeepCloneable<Card>{
 		return new Card(pips, suitNum);
 	}
 }
+

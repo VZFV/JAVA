@@ -1,3 +1,12 @@
+/**
+ * TreeInterface
+ * Author: Feng Zhang
+ * 11/14/2016
+ * window 10 64bit, eclipse
+ * TreeInterface interface class 
+ */
+package HW4;
+
 // Adapted from Code By Y. Daniel Liang
 // Modified by C. Lee-Klawender
 // Note: this interface is NOT the same as the General Tree version shown in Catalyst

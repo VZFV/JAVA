@@ -1,18 +1,35 @@
+/**
+ * BST
+ * Author: Feng Zhang
+ * 11/14/2016
+ * window 10 64bit, eclipse
+ * This is Binary search tree class which inherits binary tree. 
+ */
+package HW4;
+
+import java.util.Comparator;
+
 public class BST<E extends DeepCloneable<E>>  //*****CHANGED for HW#4*****
 	extends BinaryTree<E>
 {
 
-    private boolean foundNode; // helper variable
-	// DECLARE A PRIVATE COMPARATOR INSTANCE VARIABLE HERE!
-
+    private boolean foundNode;  // helper variable
+    private Comparator<E> comp;		// DECLARE A PRIVATE COMPARATOR INSTANCE VARIABLE HERE!
+    
     /** Create a default binary tree */
-    public BST() 
-	{ // SEE HW#4 FOR WHAT TO CHANGE HERE
+    public BST(){ }
+    
+    
+    public BST(Comparator<E> c) 
+	{ 
+    	comp = c;
     }
 
     public BST(BST<E> sourceTree) // SEE HW#4 FOR WHAT TO CHANGE HERE
     {
         super(sourceTree);
+    
+        this.comp = sourceTree.comp;
 		// SEE HW#4 FOR WHAT TO CHANGE HERE
     }
 
@@ -23,13 +40,13 @@ public class BST<E extends DeepCloneable<E>>  //*****CHANGED for HW#4*****
 
     		while (current != null)
     		{
-    			if (e.compareTo(current.getData()) < 0)//*****CHANGE THIS for HW#4*****
+    			if (comp.compare(e, current.getData()) < 0)// <, so go left
     			{
-    				current = current.getLeftChild();
+    				current = current.getLeftChild();		// get the node's left child
     			}
-    			else if (e.compareTo(current.getData()) > 0)//*****CHANGE THIS for HW#4*****
+    			else if (comp.compare(e, current.getData()) > 0)// >, so go right
     			{
-    				current = current.getRightChild();
+    				current = current.getRightChild();		// get the node's ritht child
     			}
     			else // element matches current.getData()
     			return true; // Element is found
@@ -42,12 +59,15 @@ public class BST<E extends DeepCloneable<E>>  //*****CHANGED for HW#4*****
 	/**
 	 * Returns the data of the Node that equals the parameter, null if not found.
 	 * */
-	public E getEntry(E e)         // YOU WRITE FOR HW#4
+	public E getEntry(E e)       
 	{
-        // Call findNode starting with the root and save the return value
-        // Check the return value to see if it's found or not
-        // If it's found, return the return value's data
-        //     Otherwise return null
+		BinaryNode<E> current = root;	// assign root to local variable
+		BinaryNode<E> getNode =_findNode(current, e);	// call findNode and save the return value
+		if (getNode != null)	// check if found
+			return getNode.getData();	// return data
+		else
+			return null;
+      
 	}
 
 	// FOR EXERCISE: CALL A PRIVATE RECURSIVE METHOD THAT RETURNS A BinaryNode that equals THE PARAMETER
@@ -55,12 +75,12 @@ public class BST<E extends DeepCloneable<E>>  //*****CHANGED for HW#4*****
 
 	private BinaryNode<E> _findNode(BinaryNode<E> node, E e )
 	{
-		if( node == null )
+		if( node == null )	// no more node
 			return null;
-		else if( e.compareTo(node.getData()) < 0 ) //*****CHANGE THIS for HW#4*****
-				return _findNode( node.getLeftChild(), e );
-		else if( e.compareTo(node.getData()) > 0 ) //*****CHANGE THIS for HW#4*****
-				return _findNode( node.getRightChild(), e );
+		else if( comp.compare(e, node.getData()) < 0 ) 		// <, so go left
+				return _findNode( node.getLeftChild(), e );	//recursive call
+		else if( comp.compare(e, node.getData()) > 0 ) 		// >, so go right
+				return _findNode( node.getRightChild(), e );	//recursive call
 		else // found it!
 			return node;
 	}
@@ -79,18 +99,16 @@ public class BST<E extends DeepCloneable<E>>  //*****CHANGED for HW#4*****
 	// Private recursive method that returns an updated "root" node from where current node is
     private BinaryNode<E> _insert( BinaryNode<E> node, E e )
     {
-        // YOU WRITE FOR HW#4, using this recursive algorithm: (HINT:see _delete)
-		// MAKE SURE YOU COMPARE CORRECTLY MUST call the correct METHOD to compare!
-        //      IF no more nodes THEN
-        //                return a new Node(e)
-        //      ELSE IF e < node's data THEN
-        //                   set the node's left to _insert(node's left, e)
-        //           ELSE
-        //                   set the node's right to _insert(node's right, e)
-        //           ENDIF
-		//           RETURN node
-        //       ENDIF
-
+    	if( node == null )
+        {
+            return new BinaryNode<E>(e);
+        }
+        if ( comp.compare(e, node.getData()) < 0 ) // <, so go left
+             node.setLeftChild( _insert(node.getLeftChild(), e) ); //recursive call
+        else  										// go right
+             node.setRightChild( _insert(node.getRightChild(), e) ); //recursive call
+           
+        return node;
     }
 
 	@Override
@@ -116,10 +134,10 @@ public class BST<E extends DeepCloneable<E>>  //*****CHANGED for HW#4*****
         {
             return null;
         }
-        if ( e.compareTo(node.getData()) < 0 ) // <, so go left//*****CHANGE THIS for HW#4*****
+        if ( comp.compare(e, node.getData()) < 0 ) // <, so go left
              node.setLeftChild( _delete(node.getLeftChild(), e) );//recursive call
         else
-            if( e.compareTo(node.getData()) > 0 ) // >, so go right//*****CHANGE THIS for HW#4*****
+            if( comp.compare(e, node.getData()) > 0 ) // >, so go right
                 node.setRightChild( _delete(node.getRightChild(), e) );//recursive call
             else
             {									// FOUND THE NODE
@@ -171,19 +189,29 @@ public class BST<E extends DeepCloneable<E>>  //*****CHANGED for HW#4*****
         return nodeToDelete;
     } // end private _deleteNode
 
-    public E getFirst()// you finish (part of HW#4)
+    public E getFirst()
     {
-    	// NON-recursive algorithm:
-    	// If the tree is empty,  return null
-    	// FIND THE LEFT-MOST LEFT CHILD
-    	// WHEN you can't go left anymore, return the node's data to firstItem
+    	
+    	if (isEmpty())		// if the tree if empty
+    		return null;
+    	BinaryNode<E> current = root;
+    	while(current.getLeftChild() != null)	// can't find left child
+    		current = current.getLeftChild();	// get the node's left child
+    	
+    	return current.getData();				// return the node's data
+    		
     }
     
-    public E getLast()// you finish (part of HW#4)
+    public E getLast()
     {
-    	// If the tree is empty, return null
-    	// FIND THE RIGHT-MOST RIGHT CHILD
-    	// WHEN you can't go right anymore, return the node's data to LastItem
+    	if (isEmpty())		// if the tree if empty
+    		return null;
+    	BinaryNode<E> current = root;
+    	while(current.getRightChild() != null)	// can't find right child
+    		current = current.getRightChild();	// get the node's right child
+    	
+    	return current.getData();				// return the node's data
+    	
     }
 
 } // end class BST
