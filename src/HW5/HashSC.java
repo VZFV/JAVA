@@ -217,6 +217,18 @@ public class HashSC<E> extends HashTable<E>// CHANGE TO MAKE THIS A SUBCLASS OF 
       return hashVal;
    }
    
+   public double AverageSize(){
+	   int num = 0;
+	   int totalSize = 0;
+	   for(int i=0;i<mLists.length;i++){
+		   if(!mLists[i].isEmpty()){
+			   num++;
+			   totalSize += mLists[i].getLength();
+		   }
+	   }
+	   return totalSize/num;
+   }
+   
    protected static int nextPrime(int n)
    {
       int k, candidate, loopLim;

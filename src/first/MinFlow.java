@@ -72,7 +72,6 @@ public class MinFlow {
 				{ 0, 0, 0, 7, 0, 4 },
 				{ 0, 0, 0, 0, 0, 0 } };
 		V = graph.length;
-		int flow = maxFlow(graph, 0, 5);
-		System.out.println("The maximum possible flow is :" + flow);
+		System.out.println("The maximum possible flow is :" + maxFlow(graph, 0, 5));
 	}
 }

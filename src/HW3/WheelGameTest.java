@@ -17,8 +17,8 @@ public class WheelGameTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner scanner = openInputFile();
-		WheelGame wheelgame = new WheelGame(scanner, 5); //instantiate a WheelGame, passing the Scanner and 5,
-		wheelgame.playGame(); // call play game method
+		//WheelGame wheelgame = new WheelGame(scanner, 5); //instantiate a WheelGame, passing the Scanner and 5,
+		//wheelgame.playGame(); // call play game method
 		testCircularList(); // test testCircularList method
 	}
 	

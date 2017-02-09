@@ -14,6 +14,7 @@ public class PalindromeTest {
 
         for (int i = 0; i < inputString.length(); i++) {
             stack.push(inputString.charAt(i));
+           
         }
 
         String reverseString = "";
